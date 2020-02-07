@@ -13,6 +13,7 @@ import { NotFoundComponent } from './pages/not-found/not-found.component';
 if (environment.production && environment.sentryDsn) {
   Sentry.init({
     dsn: environment.sentryDsn,
+    release: environment.sentryRelease,
   });
 }
 

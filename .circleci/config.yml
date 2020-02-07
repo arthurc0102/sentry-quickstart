@@ -32,7 +32,9 @@ jobs:
       - run:
           name: Install dependencies and build
           command: |
-            # Should sed release version here
+            cat src/environments/environment.prod.ts
+            sed -ri "s|\'VERSION\'|\'$CI_COMMIT_SHA\'|" src/environments/environment.prod.ts
+            cat src/environments/environment.prod.ts
             npm install
             npm run build:ci
       - save_cache:
