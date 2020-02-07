@@ -82,7 +82,7 @@ jobs:
       - run:
           name: Install and configure dependencies
           command: |
-            npm install -g --silent gh-pages@2.0.1
+            npm install -g --silent gh-pages
             git config user.email "arthurc0102@gmail.com"
             git config user.name "Arthur Chang"
       - add_ssh_keys:
@@ -92,7 +92,7 @@ jobs:
           name: Deploy to gh-pages branch
           command: |
             rm -rf dist/**/*.map
-            gh-pages --dist dist --message "[skip ci] Updates $CIRCLE_SHA1" --history false
+            gh-pages --dist dist --message "[skip ci] Updates $CIRCLE_SHA1" --no-history
 
 workflows:
   version: 2
