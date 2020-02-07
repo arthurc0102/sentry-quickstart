@@ -1,0 +1,98 @@
+version: 2
+
+jobs:
+  test:
+    docker:
+      - image: node:12.14
+    working_directory: ~/repo
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - npm-v1-{{ checksum "package-lock.lock" }}
+      - run:
+          name: Install dependencies and check lint
+          command: |
+            npm install
+            npm run lint
+      - save_cache:
+          key: npm-v1-{{ checksum "package-lock.lock" }}
+          paths:
+            - node_modules
+
+  build:
+    docker:
+      - image: node:12.14
+    working_directory: ~/repo
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - npm-v1-{{ checksum "package-lock.lock" }}
+      - run:
+          name: Install dependencies and build
+          command: |
+            # Should sed release version here
+            npm install
+            npm run build:ci
+      - save_cache:
+          key: npm-v1-{{ checksum "package-lock.lock" }}
+          paths:
+            - node_modules
+      - persist_to_workspace:
+          root: ~/repo
+          paths:
+            - dist
+
+  sentry:
+    docker:
+      - image: getsentry/sentry-cli
+    working_directory: ~/repo
+    steps:
+      - run:
+          name: Install git and ssh
+          command: apk add --no-cache git openssh-client
+      - checkout
+      - attach_workspace:
+          at: ~/repo
+      - run:
+          name: Upload to sentry
+          command: |
+            sentry-cli releases new $CIRCLE_SHA1
+            sentry-cli releases set-commits --auto $CIRCLE_SHA1
+            sentry-cli releases files $CIRCLE_SHA1 upload-sourcemaps ./dist \
+              -x .js -x .map \
+              --validate \
+              --verbose \
+              --rewrite \
+              --strip-common-prefix
+            sentry-cli releases finalize $CIRCLE_SHA1
+
+  deploy:
+    docker:
+      - image: node:12.14
+    working_directory: ~/repo
+    steps:
+      - checkout
+      - attach_workspace:
+          at: ~/repo
+      - run:
+          name: Install and configure dependencies
+          command: |
+            npm install -g --silent gh-pages@2.0.1
+            git config user.email "ci@circleci.com"
+            git config user.name "ci"
+      - run:
+          name: Deploy to gh-pages branch
+          command: gh-pages --dist dist
+
+workflows:
+  version: 2
+  build:
+    jobs:
+      - test
+
+
+# SENTRY_PROJECT
+# SENTRY_ORG
+# SENTRY_PROJECT
