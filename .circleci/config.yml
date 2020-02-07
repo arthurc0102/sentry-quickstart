@@ -72,7 +72,7 @@ jobs:
               --verbose \
               --rewrite \
               --strip-common-prefix \
-              --url-prefix '~/js'
+              --url-prefix '~/sentry-quickstart'
             sentry-cli releases finalize $CIRCLE_SHA1
 
   deploy:
