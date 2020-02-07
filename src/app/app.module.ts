@@ -10,7 +10,7 @@ import { environment } from '../environments/environment';
 import { HomeComponent } from './pages/home/home.component';
 import { NotFoundComponent } from './pages/not-found/not-found.component';
 
-if (!environment.production && environment.sentryDsn) {
+if (environment.production && environment.sentryDsn) {
   Sentry.init({
     dsn: environment.sentryDsn,
   });

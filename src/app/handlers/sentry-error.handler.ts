@@ -10,7 +10,7 @@ export class SentryErrorHandler implements ErrorHandler {
   constructor() { }
 
   handleError(error: any) {
-    if (!environment.production && environment.sentryDsn) {
+    if (environment.production && environment.sentryDsn) {
       const eventId = Sentry.captureException(error.originalError || error);
       Sentry.showReportDialog({ eventId });
       return;
