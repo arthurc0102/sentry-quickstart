@@ -53,6 +53,9 @@ jobs:
           name: Install git and ssh
           command: apk add --no-cache git openssh-client
       - checkout
+      - restore_cache:
+        keys:
+          - npm-v1-{{ checksum "package-lock.json" }}
       - attach_workspace:
           at: ~/repo
       - run:
