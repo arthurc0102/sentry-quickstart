@@ -9,14 +9,14 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-            - npm-v1-{{ checksum "package-lock.lock" }}
+            - npm-v1-{{ checksum "package-lock.json" }}
       - run:
           name: Install dependencies and check lint
           command: |
             npm install
             npm run lint
       - save_cache:
-          key: npm-v1-{{ checksum "package-lock.lock" }}
+          key: npm-v1-{{ checksum "package-lock.json" }}
           paths:
             - node_modules
 
@@ -28,7 +28,7 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-            - npm-v1-{{ checksum "package-lock.lock" }}
+            - npm-v1-{{ checksum "package-lock.json" }}
       - run:
           name: Install dependencies and build
           command: |
@@ -36,7 +36,7 @@ jobs:
             npm install
             npm run build:ci
       - save_cache:
-          key: npm-v1-{{ checksum "package-lock.lock" }}
+          key: npm-v1-{{ checksum "package-lock.json" }}
           paths:
             - node_modules
       - persist_to_workspace:
