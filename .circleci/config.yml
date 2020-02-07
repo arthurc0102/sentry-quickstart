@@ -90,7 +90,7 @@ jobs:
             - "93:dc:66:67:d6:19:51:c0:82:33:4f:4d:93:98:44:fd"
       - run:
           name: Deploy to gh-pages branch
-          command: gh-pages --dist dist
+          command: gh-pages --dist dist --message "[skip ci] Updates"
 
 workflows:
   version: 2
