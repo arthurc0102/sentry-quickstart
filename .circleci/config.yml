@@ -82,6 +82,9 @@ jobs:
             npm install -g --silent gh-pages@2.0.1
             git config user.email "ci@circleci.com"
             git config user.name "ci"
+      - add_ssh_keys:
+          fingerprints:
+            - "93:dc:66:67:d6:19:51:c0:82:33:4f:4d:93:98:44:fd"
       - run:
           name: Deploy to gh-pages branch
           command: gh-pages --dist dist
@@ -91,8 +94,27 @@ workflows:
   build:
     jobs:
       - test
-
-
-# SENTRY_PROJECT
-# SENTRY_ORG
-# SENTRY_PROJECT
+      - build:
+          requires:
+            - test
+          filters:
+            branches:
+              only:
+                - master
+      - sentry:
+          requires:
+            - test
+            - build
+          filters:
+            branches:
+              only:
+                - master
+    - deploy:
+        requires:
+          - test
+          - build
+          - sentry
+        filters:
+          branches:
+            only:
+              - master
