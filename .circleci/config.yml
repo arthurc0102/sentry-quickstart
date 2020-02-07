@@ -91,9 +91,7 @@ jobs:
       - run:
           name: Deploy to gh-pages branch
           command: |
-            ls -al dist
-            rm -rfv dist/**/*.map
-            ls -al dist
+            rm -rfv dist/{**/,}*.map
             gh-pages --dist dist --message "[skip ci] Updates $CIRCLE_SHA1" --no-history
 
 workflows:
