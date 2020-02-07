@@ -7,6 +7,8 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { SentryErrorHandler } from './handlers/sentry-error.handler';
 import { environment } from '../environments/environment';
+import { HomeComponent } from './pages/home/home.component';
+import { NotFoundComponent } from './pages/not-found/not-found.component';
 
 if (!environment.production && environment.sentryDsn) {
   Sentry.init({
@@ -16,7 +18,9 @@ if (!environment.production && environment.sentryDsn) {
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    HomeComponent,
+    NotFoundComponent
   ],
   imports: [
     BrowserModule,
