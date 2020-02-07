@@ -109,12 +109,12 @@ workflows:
             branches:
               only:
                 - master
-    - deploy:
-        requires:
-          - test
-          - build
-          - sentry
-        filters:
-          branches:
-            only:
-              - master
+      - deploy:
+          requires:
+            - test
+            - build
+            - sentry
+          filters:
+            branches:
+              only:
+                - master
