@@ -96,11 +96,7 @@ workflows:
   version: 2
   build:
     jobs:
-      - test:
-          filters:
-            branches:
-              ignore:
-                - gh-pages
+      - test
       - build:
           requires:
             - test
@@ -108,8 +104,6 @@ workflows:
             branches:
               only:
                 - master
-              ignore:
-                - gh-pages
       - sentry:
           requires:
             - test
@@ -118,8 +112,6 @@ workflows:
             branches:
               only:
                 - master
-              ignore:
-                - gh-pages
       - deploy:
           requires:
             - test
@@ -129,5 +121,3 @@ workflows:
             branches:
               only:
                 - master
-              ignore:
-                - gh-pages
