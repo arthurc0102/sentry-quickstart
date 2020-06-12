@@ -112,7 +112,6 @@ workflows:
                 - master
       - sentry:
           requires:
-            - test
             - build
           filters:
             branches:
@@ -120,8 +119,6 @@ workflows:
                 - master
       - deploy:
           requires:
-            - test
-            - build
             - sentry
           filters:
             branches:
